@@ -1,36 +1,37 @@
 import { useEffect, useState } from "react";
-import {
-  getTodos,
-  createTodo,
-  updateTodo,
-  deleteTodo,
-} from "./api/todoApi";
+import { getTodos, createTodo, updateTodo, deleteTodo } from "./api/todoApi";
+import Header from "./components/Header/Header";
+import TaskInput from "./components/TaskInput/TaskInput";
+import TaskList from "./components/TaskList/TaskList";
 
 function App() {
   const [todos, setTodos] = useState([]);
-  const [title, setTitle] = useState("");
 
   const loadTodos = async () => {
-    const res = await getTodos();
-    setTodos(res.data);
+    try {
+      const res = await getTodos();
+      setTodos(res.data);
+    } catch (error) {
+      console.error("Failed to load todos", error);
+    }
   };
 
   useEffect(() => {
     loadTodos();
   }, []);
 
-  const handleAdd = async () => {
-    if (!title.trim()) return;
-    await createTodo({ title, completed: false });
-    setTitle("");
+  const handleAdd = async (taskData) => {
+    await createTodo({ ...taskData, completed: false });
     loadTodos();
   };
 
   const handleToggle = async (todo) => {
-    await updateTodo(todo.id, {
-      ...todo,
-      completed: !todo.completed,
-    });
+    await updateTodo(todo.id, { ...todo, completed: !todo.completed });
+    loadTodos();
+  };
+
+  const handleEdit = async (todo, newTitle, newDescription) => {
+    await updateTodo(todo.id, { ...todo, title: newTitle, description: newDescription });
     loadTodos();
   };
 
@@ -40,34 +41,15 @@ function App() {
   };
 
   return (
-    <div style={{ padding: 40 }}>
-      <h1>Todo List</h1>
-
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="New task..."
+    <div style={{ maxWidth: "800px", margin: "40px auto", padding: "0 20px" }}>
+      <Header />
+      <TaskInput onAdd={handleAdd} />
+      <TaskList 
+        todos={todos} 
+        onToggle={handleToggle} 
+        onDelete={handleDelete}
+        onEdit={handleEdit}
       />
-      <button onClick={handleAdd}>Add</button>
-
-      <ul>
-        {todos.map((t) => (
-          <li key={t.id}>
-            <span
-              onClick={() => handleToggle(t)}
-              style={{
-                textDecoration: t.completed ? "line-through" : "none",
-                cursor: "pointer",
-                marginRight: 10,
-              }}
-            >
-              {t.title}
-            </span>
-
-            <button onClick={() => handleDelete(t.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
