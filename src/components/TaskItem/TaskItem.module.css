@@ -1,0 +1,113 @@
+.itemCard {
+  background: white;
+  padding: 16px 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease-in-out;
+  border-left: 4px solid #3b82f6;
+}
+
+.itemCard:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.completedCard {
+  border-left-color: #94a3b8;
+  background-color: #f8fafc;
+  opacity: 0.8;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.contentContainer {
+  flex: 1;
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.description {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.completedText .title,
+.completedText .description {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+.editMode {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editInput {
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actions button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.editBtn, .saveBtn {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.editBtn:hover, .saveBtn:hover {
+  background-color: #bae6fd;
+}
+
+.deleteBtn {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.deleteBtn:hover {
+  background-color: #fecaca;
+}
+
+@media (max-width: 500px) {
+  .itemCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
